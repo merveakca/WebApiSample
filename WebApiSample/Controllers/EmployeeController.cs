@@ -21,11 +21,37 @@ public class EmployeeController : ControllerBase
         NorthwndContext db = new NorthwndContext();
         Employee employee = db.Employees.FirstOrDefault(x => x.EmployeeId == id);
 
-        if(employee == null)
+        if (employee == null)
         {
             return NotFound("Böyle bir employee mevcut değil");
         }
 
         return Ok(employee);
+    }
+
+    [HttpPost]
+    public IActionResult Post(Employee employee)
+    {
+        NorthwndContext db = new NorthwndContext();
+        db.Employees.Add(employee);
+        db.SaveChanges();
+
+        return Ok("Ekleme işlemi başarılı");
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        NorthwndContext db = new NorthwndContext();
+        Employee employee = db.Employees.Find(id);
+
+        if (employee == null)
+        {
+            return NotFound("Böyle bir employee bulunamadı");
+        }
+
+        db.Employees.Remove(employee);
+        db.SaveChanges();
+        return Ok("işlem başarılı");
     }
 }
