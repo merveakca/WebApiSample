@@ -54,4 +54,20 @@ public class EmployeeController : ControllerBase
         db.SaveChanges();
         return Ok("işlem başarılı");
     }
+
+    [HttpPut]
+    public IActionResult Put(Employee employee)
+    {
+        NorthwndContext db = new NorthwndContext();
+
+        // öncelikle güncellenecek datayı buluyoruz
+        Employee entity = db.Employees.FirstOrDefault(q=>q.EmployeeId == employee.EmployeeId);
+
+        entity.FirstName= employee.FirstName;
+        entity.LastName= employee.LastName;
+        entity.Title= employee.Title;
+        db.SaveChanges();
+
+        return Ok("Güncelleme işlemi başarılı");
+    }
 }
